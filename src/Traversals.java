@@ -11,8 +11,14 @@ public class Traversals {
    * @return the sum of leaf node values, or 0 if the tree is null
    */
   public static int sumLeafNodes(TreeNode<Integer> node) {
-    return 0;
+    if (node == null) return 0;
+    if (node.child().isEmpty()) return node.value();
+    int sum = 0;
+    for (TreeNode<Integer> child : node.child()) {
+      sum += sumLeafNodes(child);
   }
+  return sum;
+}
 
   /**
    * Counts the number of internal nodes (non-leaf nodes) in the given tree of integers.
@@ -23,7 +29,13 @@ public class Traversals {
    * @return the count of internal nodes, or 0 if the tree is null
    */
   public static int countInternalNodes(TreeNode<Integer> node) {
-    return 0;
+    if (node == null) return 0;
+    if (node.child().isEmpty()) return 0;
+    int count = 1; // Count the current node as an internal node
+    for (TreeNode<Integer> child : node.child()) {
+      count += countInternalNodes(child);
+    } 
+    return count;
   }
 
   /**
@@ -37,7 +49,13 @@ public class Traversals {
    * @return a post-order traversal string, or an empty string if the tree is null
    */
   public static <T> String buildPostOrderString(TreeNode<T> node) {
-    return null;
+    if (node == null) return "";
+    StringBuilder sb = new StringBuilder();
+    for (TreeNode<T> child : node.child()) {
+      sb.append(buildPostOrderString(child));
+    }
+    sb.append(node.value().toString());
+    return sb.toString();
   }
 
   /**
@@ -49,7 +67,18 @@ public class Traversals {
    * @return a list of node values in a top-to-bottom order, or an empty list if the tree is null
    */
   public static <T> List<T> collectLevelOrderValues(TreeNode<T> node) {
-    return null;
+    if (node == null) return new ArrayList<>();
+    List<T> result = new ArrayList<>();
+    Queue<TreeNode<T>> queue = new LinkedList<>();
+    queue.offer(node);
+    while (!queue.isEmpty()) {
+      TreeNode<T> current = queue.poll();
+      result.add(current.value());
+      for (TreeNode<T> child : current.child()) {
+        queue.offer(child);
+      }
+    }
+    return result;
   }
 
   /**
